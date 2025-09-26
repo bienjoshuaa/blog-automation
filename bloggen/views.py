@@ -68,7 +68,6 @@ CONCLUSION: <conclusion>
                 max_tokens=800,
                 temperature=0.6,
             )
-            # SDK response compatibility handling
             text = ""
             if getattr(chat_resp, "text", None):
                 text = chat_resp.text.strip()
@@ -76,7 +75,6 @@ CONCLUSION: <conclusion>
                 blocks = chat_resp.message.content
                 parts = []
                 for b in blocks:
-                    # Text or tool blocks; take text-like content
                     val = getattr(b, "text", None) or getattr(b, "content", None)
                     if val:
                         parts.append(str(val))
@@ -88,34 +86,28 @@ CONCLUSION: <conclusion>
         except Exception as exc:
             return render(request, "bloggen/generate.html", {"error": f"Cohere error: {exc}"})
 
-        # Simple parse heuristics
         title = "Generated Blog"
         intro = ""
         sections_html = ""
         takeaways_html = ""
         conclusion = ""
 
-        # Ensure markers land on their own lines even if model emits them inline
         text = re.sub(r"\s*(TITLE:|INTRO:|SECTIONS:|TAKEAWAYS:|CONCLUSION:)\s*", r"\n\1 ", text, flags=re.IGNORECASE)
 
-        # Minimal markdown → HTML for bold/italic so ** and * render as expected
         def md_inline_to_html(s: str) -> str:
             if not s:
                 return s
-            # Convert inline markdown markers to HTML
             s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
             s = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", s)
             return s
 
         text = md_inline_to_html(text)
 
-        # Drop stray lines that are only asterisks and trim dangling asterisks
         raw_lines = [l for l in text.splitlines()]
         lines = []
         for l in raw_lines:
             if re.fullmatch(r"\*+", l.strip()):
                 continue
-            # remove leading/trailing asterisks left by the model
             cleaned = re.sub(r"^\*+|\*+$", "", l.strip())
             if cleaned:
                 lines.append(cleaned)
@@ -159,7 +151,6 @@ CONCLUSION: <conclusion>
                 elif current_section == "conclusion":
                     conclusion += (" " if conclusion else "") + line
                 else:
-                    # Convert numbered headings like "1) Title" or "2. Title" to <h2>
                     header_match = re.match(r"^\s*\d+[\.).]?\s*(.+)$", line)
                     if header_match:
                         flush_section()
@@ -185,7 +176,6 @@ CONCLUSION: <conclusion>
 
         content_html = "\n".join(content_parts)
 
-        # Topic-related cover image using Unsplash Source with a keyword query
         keywords = (title or topic or "blog").lower()
         query = urllib.parse.quote_plus(keywords)
         cover_image_url = f"https://source.unsplash.com/1200x600/?{query}"

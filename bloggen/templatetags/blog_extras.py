@@ -19,6 +19,3 @@ def excerpt(html: str, chars: int = 140) -> str:
     if len(text) <= chars:
         return text
     return text[: chars - 1].rsplit(" ", 1)[0] + "…"
-
-
-

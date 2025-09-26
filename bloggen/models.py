@@ -10,4 +10,3 @@ class Blog(models.Model):
     def __str__(self) -> str:
         return self.title
 
-# Create your models here.

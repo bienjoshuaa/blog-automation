@@ -8,4 +8,3 @@ class BlogAdmin(admin.ModelAdmin):
     search_fields = ("title", "content")
     list_filter = ("created_at",)
 
-# Register your models here.
