@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load blog_extras %}
+{% block title %}{{ blog.title }} - AutoBlog{% endblock %}
+{% block content %}
+<article class="post" aria-labelledby="post-title">
+  {% if blog.cover_image_url %}
+  <img class="post-cover" src="{{ blog.cover_image_url }}" alt=""/>
+  {% endif %}
+  <h1 id="post-title" class="post-title">{{ blog.title }}</h1>
+  <p class="muted">{{ blog.created_at|date:'M d, Y' }} · {{ blog.content|reading_time }}</p>
+  <div class="post-content prose">
+    {{ blog.content|safe }}
+  </div>
+  <nav class="post-actions" aria-label="Post actions">
+    <a class="btn" href="/">← Back</a>
+  </nav>
+</article>
+{% endblock %}
+
+

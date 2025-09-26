@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Generate Blog{% endblock %}
+{% block content %}
+<section class="panel" aria-labelledby="gen-title">
+  <h1 id="gen-title">Generate a new blog</h1>
+  {% if error %}
+    <div class="alert" role="alert">{{ error }}</div>
+  {% endif %}
+  <form method="post" class="form" autocomplete="off" onsubmit="return handleGenerateSubmit(this)">
+    {% csrf_token %}
+    <label for="topic">Topic</label>
+    <input id="topic" name="topic" type="text" placeholder="e.g., Mindful productivity for remote workers" required aria-required="true"/>
+    <button class="btn" type="submit">
+      <span class="btn-label">Generate</span>
+      <span class="spinner" aria-hidden="true"></span>
+    </button>
+  </form>
+  </section>
+{% endblock %}
+
+

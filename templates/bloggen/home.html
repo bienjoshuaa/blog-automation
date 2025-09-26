@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load blog_extras %}
+{% block title %}AutoBlog - Home{% endblock %}
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div>
+    <h1 id="hero-title">Generate blogs with one prompt</h1>
+    <p>Create long-form, styled posts instantly using Cohere.</p>
+    <a class="btn" href="/generate/">Create a blog</a>
+  </div>
+</section>
+
+<section aria-labelledby="recent-title" class="section">
+  <div class="section-head"><h2 id="recent-title">Recent posts</h2><a class="link" href="/generate/">New post</a></div>
+  <div class="grid" role="list">
+    {% for blog in blogs %}
+    <article class="card" role="listitem">
+      <a href="/blog/{{ blog.id }}/" class="card-link">
+        {% if blog.cover_image_url %}
+        <img src="{{ blog.cover_image_url }}" alt="" class="card-img" loading="lazy"/>
+        {% endif %}
+        <div class="card-body">
+          <h3 class="card-title">{{ blog.title }}</h3>
+          <p class="muted">{{ blog.created_at|date:'M d, Y' }} · {{ blog.content|reading_time }}</p>
+          <p class="muted">{{ blog.content|excerpt:120 }}</p>
+        </div>
+      </a>
+    </article>
+    {% empty %}
+      <div class="empty">
+        <p class="muted">No posts yet.</p>
+        <a class="btn" href="/generate/">Generate your first post</a>
+      </div>
+    {% endfor %}
+  </div>
+  </section>
+{% endblock %}
+
+
