@@ -22,7 +22,6 @@ Open `http://127.0.0.1:8000/` to view. Use `Generate` to create a blog.
 
 ### Notes
 - API key is loaded from environment via `python-decouple` in `blog_automation/settings.py`.
-- Images use Lorem Picsum. Layout is responsive (CSS Grid/Flexbox).
 
 
 
