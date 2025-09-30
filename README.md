@@ -16,7 +16,7 @@ If you already have the files locally, skip to step 2.
 
 ```bash
 git clone <your-repo-url>
-cd "Mental Health"
+cd "blog-automation"
 ```
 
 ### 2) Create a virtual environment (Windows PowerShell)
